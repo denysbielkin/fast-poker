@@ -31,6 +31,9 @@ const Game = () => {
         })
     },[]);
 
+    useEffect(()=> {
+        console.log({player_1}, {player_2})
+    }, [player_1, player_2]);
     return (
         <>
             <Hand key={1} player={player_1} playerNumber={1} isWinner={winner.player_1} />

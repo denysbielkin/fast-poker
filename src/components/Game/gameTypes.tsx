@@ -1,4 +1,3 @@
-
 type WinnerType = {
     player_1: boolean,
     player_2: boolean,
