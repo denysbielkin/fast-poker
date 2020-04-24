@@ -1,5 +1,8 @@
 # fast-poker
 
+Preview:
+https://denisbelkin.github.io/fast-poker/dist/index.html
+
 To launch the project you need:
 
 • download it
