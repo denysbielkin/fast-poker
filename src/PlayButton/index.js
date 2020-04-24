@@ -1,23 +1,20 @@
 import React, { useState, useContext } from 'react';
-import {v4 as uuid4} from 'uuid';
+import { v4 as uuid4 } from 'uuid';
 
-import {GameContext} from '../App';
+import { GameContext } from '../App';
 
 const PlayButton = () => {
-    const {setContextValue,  ...rest} = useContext(GameContext);
+    const { setContextValue,  ...rest } = useContext(GameContext);
     const { setNewWinner } = useContext(GameContext);
     const [round, setRound] = useState(0);
-    // const [blackListRepeats, setBlackListRepeats] = useState([]);
     const suits = ['spade', 'heart', 'diamond', 'club'],
-        cardNumbers = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+          cardNumbers = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
     const suitsMax = suits.length - 1,
-        cardsMax = cardNumbers.length - 1;
+          cardsMax = cardNumbers.length - 1;
     const handLength = 5;
 
     const getImage = ({suit, cardNumber}) => `http://h3h.net/images/cards/${suit}_${cardNumber}.svg`;
     const getIndex = (max) => Math.round(Math.random() * max);
-
-    // const setKey = ({ suit, cardNumber }, index) => suit + (index * cardNumber) + index;
 
     const generateHand = () => {
         const cards = [];
@@ -31,34 +28,6 @@ const PlayButton = () => {
             return cardOnCheck;
         };
 
-
-        /*
-                const checkOnAndChangeSimilar = () => {
-                    return (cardOnCheck) => {
-                        const blackList = [];
-                        let isBlackListed = blackList.find(tabooCard => isSimilar(tabooCard, cardOnCheck));
-                        if(isBlackListed){
-                            console.log('black trigger')
-                           return checkOnAndChangeSimilar(createCard())
-                        } else {
-                            console.log('else ')
-
-                            console.log({blackList})
-                            let serendipity = cards.find( prevCard => isSimilar(prevCard, cardOnCheck));
-                            if(serendipity) {
-                                console.log('serendipity trigger')
-                                blackList.push(cardOnCheck);
-                                return checkOnAndChangeSimilar(createCard());
-                            }
-                            console.log('free')
-                            return cardOnCheck;
-                        }
-                    }
-                };
-
-        * */
-
-
         const createCard = () => ({suit: suits[getIndex(suitsMax)], cardNumber: cardNumbers[getIndex(cardsMax)]});
 
         for (let i = 0; i < handLength; i++) {
@@ -66,11 +35,11 @@ const PlayButton = () => {
             cards.push({
                 ...newCard,
                 imgSrc: getImage(newCard),
-                id: uuid4()//setKey({suit, cardNumber}, i),
+                id: uuid4(),
+                pair: { has: false }
             })
         }
         return cards
-
     };
 
     const searchPairs = (cards) => {
@@ -96,7 +65,6 @@ const PlayButton = () => {
                     };
                     return true;
                 }
-
             })
         });
 
@@ -110,8 +78,8 @@ const PlayButton = () => {
         setRound(round + 1);
         const player_1 = {cards: generateHand()}, player_2 = {cards: generateHand()};
         const result = {
-            player_1: {pairs: searchPairs(player_1.cards), ...player_1},
-            player_2: {pairs: searchPairs(player_2.cards), ...player_2}
+            player_1: { pairs: searchPairs(player_1.cards), ...player_1 },
+            player_2: { pairs: searchPairs(player_2.cards), ...player_2 }
         };
 
         setContextValue({
