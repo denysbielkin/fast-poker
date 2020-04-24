@@ -1,8 +1,14 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 
-const Card = ({ id, imgSrc, suit, cardNumber, pair = {}, pairs = [] }) => {
-    let className = 'card';
+type CardPropsType = CardType & {
+    pairs: Array<CardType>
+}
+
+const Card = ( props: CardPropsType ) => {
+    const { id, imgSrc, suit, cardNumber, pair, pairs } = props;
+
+    let className: string = 'card';
     if (pairs.length !== 0 && pair.has) {
         if ((pairs[0].id === id) || pairs[0].id === pair.pairId) {
             className += ' pair0';
